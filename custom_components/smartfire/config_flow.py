@@ -29,7 +29,7 @@ def _build_remote_url(host: str, port: int) -> str:
 
 
 async def _test_connection(hass: HomeAssistant, base_url: str) -> bool:
-    """Test connection to the Smartfire server."""
+    """Test connection to the Smartfire server (remote mode)."""
     session = async_get_clientsession(hass)
     client = SmartfireApiClient(base_url, session)
     return await client.async_test_connection()
@@ -46,37 +46,10 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
     ) -> FlowResult:
         """Handle the initial step - choose install type."""
         if user_input is not None:
-            try:
-                install_type = user_input[CONF_INSTALL_TYPE]
-                if install_type == INSTALL_TYPE_LOCAL:
-                    return await self.async_step_local()
-                return await self.async_step_remote()
-            except Exception as err:  # pylint: disable=broad-except
-                LOGGER.exception("Smartfire config flow error: %s", err)
-                return self.async_show_form(
-                    step_id="user",
-                    data_schema=vol.Schema(
-                        {
-                            vol.Required(CONF_INSTALL_TYPE): selector.SelectSelector(
-                                selector.SelectSelectorConfig(
-                                    options=[
-                                        selector.SelectOptionDict(
-                                            value=INSTALL_TYPE_LOCAL,
-                                            label="Local (YardStick connected to this Home Assistant server)",
-                                        ),
-                                        selector.SelectOptionDict(
-                                            value=INSTALL_TYPE_REMOTE,
-                                            label="Remote (Smartfire REST server on another device)",
-                                        ),
-                                    ],
-                                    mode=selector.SelectSelectorMode.DROPDOWN,
-                                )
-                            ),
-                        }
-                    ),
-                    errors={"base": "unknown"},
-                    description_placeholders={"error": str(err)[:200]},
-                )
+            install_type = user_input[CONF_INSTALL_TYPE]
+            if install_type == INSTALL_TYPE_LOCAL:
+                return await self.async_step_local()
+            return await self.async_step_remote()
 
         return self.async_show_form(
             step_id="user",
@@ -105,51 +78,37 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self,
         user_input: dict | None = None,
     ) -> FlowResult:
-        """Handle local installation configuration."""
+        """Handle local installation - requires Smartfire Server add-on."""
         errors: dict[str, str] = {}
 
-        base_url = DEFAULT_LOCAL_URL
+        if user_input is not None and user_input.get("ready"):
+            if await _test_connection(self.hass, DEFAULT_LOCAL_URL):
+                return self.async_create_entry(
+                    title="Smartfire (Local)",
+                    data={
+                        CONF_INSTALL_TYPE: INSTALL_TYPE_LOCAL,
+                        CONF_BASE_URL: DEFAULT_LOCAL_URL,
+                    },
+                )
+            errors["base"] = "local_cannot_connect"
 
-        try:
-            if user_input is not None:
-                # Test connection to local server
-                if await _test_connection(self.hass, base_url):
-                    return self.async_create_entry(
-                        title="Smartfire (Local)",
-                        data={
-                            CONF_INSTALL_TYPE: INSTALL_TYPE_LOCAL,
-                            CONF_BASE_URL: base_url,
-                        },
-                    )
-                errors["base"] = "cannot_connect"
+        description = (
+            "Install the Smartfire Server add-on first (it has USB access for the YardStick): "
+            "Settings → Add-ons → Add-on store → Repositories → Add "
+            "https://github.com/drusenko/smartfire-homeassistant → "
+            "Install 'Smartfire Server' → Start it. Connect the YardStick, then continue."
+        )
 
-            return self.async_show_form(
-                step_id="local",
-                data_schema=vol.Schema(
-                    {
-                        vol.Required("addon_ready", default=False): selector.BooleanSelector(
-                            selector.BooleanSelectorConfig()
-                        ),
-                    }
-                ),
-                description="For local installations, you must install and run the Smartfire Server add-on. Go to Settings → Add-ons → Add-on store → Add repository, then add this repository URL. Install the 'Smartfire Server' add-on, start it, and ensure the YardStick One is connected via USB.",
-                errors=errors,
-            )
-        except Exception as err:  # pylint: disable=broad-except
-            LOGGER.exception("Smartfire config flow error: %s", err)
-            return self.async_show_form(
-                step_id="local",
-                data_schema=vol.Schema(
-                    {
-                        vol.Required("addon_ready", default=False): selector.BooleanSelector(
-                            selector.BooleanSelectorConfig()
-                        ),
-                    }
-                ),
-                description="For local installations, you must install and run the Smartfire Server add-on. Go to Settings → Add-ons → Add-on store → Add repository, then add this repository URL. Install the 'Smartfire Server' add-on, start it, and ensure the YardStick One is connected via USB.",
-                errors={"base": "unknown"},
-                description_placeholders={"error": str(err)[:200]},
-            )
+        return self.async_show_form(
+            step_id="local",
+            data_schema=vol.Schema(
+                {
+                    vol.Required("ready", default=False): bool,
+                }
+            ),
+            description=description,
+            errors=errors,
+        )
 
     async def async_step_remote(
         self,

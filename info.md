@@ -10,7 +10,6 @@ Home Assistant integration for controlling Proflame 2 fireplaces (Jotul, Mendota
 ## Requirements
 
 - **YardStick One** USB RF transceiver (or compatible TI CC1101 device) for local installations
-- **Smartfire Server add-on** for local installations (included in this repository)
 
 ## Installation
 
@@ -26,12 +25,12 @@ Home Assistant integration for controlling Proflame 2 fireplaces (Jotul, Mendota
 
 ### For local installations (YardStick on HA server)
 
-1. Add the add-on repository in Home Assistant:
-   - **Settings** → **Add-ons** → **Add-on store** → **Repositories**
-   - Add: `https://github.com/drusenko/smartfire-homeassistant`
-2. Install and start the **Smartfire Server** add-on
-3. Configure the Smartfire integration (Settings → Devices & Services → Add Integration)
-4. Choose **Local** when prompted
+1. Add the add-on repository: Settings → Add-ons → Add-on store → Repositories → Add `https://github.com/drusenko/smartfire-homeassistant`
+2. Install and start the **Smartfire Server** add-on (it has USB access - no extra config needed)
+3. Connect the YardStick One USB dongle to your Home Assistant server
+4. Configure the Smartfire integration (Settings → Devices & Services → Add Integration)
+5. Choose **Local** when prompted
+6. Check "Add-on is installed and running" and submit
 
 ### For remote installations
 

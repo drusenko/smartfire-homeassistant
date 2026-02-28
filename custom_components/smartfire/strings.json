@@ -10,9 +10,10 @@
       },
       "local": {
         "title": "Local Installation",
-        "description": "For local installations, you must install and run the Smartfire Server add-on. Go to Settings → Add-ons → Add-on store → Add repository, then add this repository URL. Install the 'Smartfire Server' add-on, start it, and ensure the YardStick One is connected via USB.",
+        "description": "Install the Smartfire Server add-on first (it has USB access for the YardStick): Settings \u2192 Add-ons \u2192 Add-on store \u2192 Repositories \u2192 Add https://github.com/drusenko/smartfire-homeassistant \u2192 Install Smartfire Server \u2192 Start it. Connect the YardStick, then continue.",
         "data": {
-          "addon_ready": "I have installed the Smartfire Server add-on and it is running"
+          "addon_ready": "Addon is installed and running (test connection)",
+          "ready": "Add-on is installed and running"
         }
       },
       "remote": {
@@ -26,7 +27,8 @@
     },
     "error": {
       "cannot_connect": "Unable to connect to the Smartfire server. Ensure it is running and the URL is correct.",
-      "unknown": "An unexpected error occurred: {error}"
+      "unknown": "An unexpected error occurred: {error}",
+      "local_cannot_connect": "Smartfire Server add-on not reachable. Install and start it first."
     },
     "abort": {
       "already_configured": "This Smartfire server is already configured."

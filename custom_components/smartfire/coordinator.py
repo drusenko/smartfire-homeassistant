@@ -15,7 +15,7 @@ from .const import DOMAIN, LOGGER
 
 
 class SmartfireDataUpdateCoordinator(DataUpdateCoordinator[dict]):
-    """Class to manage fetching Smartfire data from the API."""
+    """Class to manage fetching Smartfire data."""
 
     def __init__(
         self,

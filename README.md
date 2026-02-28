@@ -8,11 +8,10 @@ Home Assistant integration for controlling Proflame 2 fireplaces via the YardSti
 
 1. **Add this repo to HACS** (Integrations) and install the Smartfire integration
 2. **Add this repo to the Add-on store** (Settings → Add-ons → Add-on store → Repositories → `https://github.com/drusenko/smartfire-homeassistant`)
-3. **Install and start** the Smartfire Server add-on
-4. **Add the integration** (Settings → Devices & Services → Add Integration → Smartfire)
-5. Choose **Local** - you'll get a fireplace switch to turn on/off
-
-> **Note:** If local mode cannot connect, try **Remote** mode instead and enter your Home Assistant server's IP address with port 5000 (e.g., `192.168.1.100:5000`).
+3. **Install and start** the Smartfire Server add-on (it has USB access for the YardStick - no extra config needed)
+4. **Connect the YardStick One** USB dongle to your Home Assistant server
+5. **Add the integration** (Settings → Devices & Services → Add Integration → Smartfire)
+6. Choose **Local** - you'll get a fireplace switch to turn on/off
 
 ### Remote Installation
 
@@ -26,11 +25,14 @@ Home Assistant integration for controlling Proflame 2 fireplaces via the YardSti
 - **YardStick One** - USB RF transceiver (TI CC1101 chipset)
 - Compatible with Proflame 2 fireplaces from Jotul, Mendota, Regency, Empire, Lennox, and others
 
+## Why an Add-on?
+
+The Smartfire Server runs as an add-on (not inside the integration) so it can use `usb: true` and get USB access to the YardStick without any manual configuration. Add-ons run in their own container with the right permissions.
+
 ## Repository Structure
 
-- `custom_components/smartfire/` - Home Assistant integration
-- `smartfire_server/` - Add-on for running the REST server locally
-- `repository.yaml` - Add-on repository configuration
+- `custom_components/smartfire/` - Home Assistant integration (UI, config flow, switch entity)
+- `smartfire_server/` - Add-on that runs the REST server with USB access for the YardStick
 
 ## License
 
