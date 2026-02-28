@@ -1,0 +1,34 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Smartfire Setup",
+        "description": "Choose how your Smartfire installation is set up.",
+        "data": {
+          "install_type": "Installation type"
+        }
+      },
+      "local": {
+        "title": "Local Installation",
+        "description": "For local installations, you must install and run the Smartfire Server add-on. Go to Settings → Add-ons → Add-on store → Add repository, then add this repository URL. Install the 'Smartfire Server' add-on, start it, and ensure the YardStick One is connected via USB.",
+        "data": {
+          "addon_ready": "I have installed the Smartfire Server add-on and it is running"
+        }
+      },
+      "remote": {
+        "title": "Remote Installation",
+        "description": "Enter the host and port of your Smartfire REST server.",
+        "data": {
+          "host": "Host",
+          "port": "Port"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Unable to connect to the Smartfire server. Ensure it is running and the URL is correct."
+    },
+    "abort": {
+      "already_configured": "This Smartfire server is already configured."
+    }
+  }
+}

@@ -1,0 +1,4 @@
+# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
+name: Smartfire Home Assistant
+url: "https://github.com/davidrusenko/smartfire-homeassistant"
+maintainer: David Rusenko
