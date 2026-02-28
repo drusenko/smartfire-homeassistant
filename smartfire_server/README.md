@@ -13,7 +13,7 @@ REST server for controlling Proflame 2 fireplaces via the YardStick One RF trans
 1. Add this repository to the Home Assistant add-on store:
    - Go to **Settings** → **Add-ons** → **Add-on store**
    - Click the three dots (⋮) → **Repositories**
-   - Add: `https://github.com/davidrusenko/smartfire-homeassistant`
+   - Add: `https://github.com/drusenko/smartfire-homeassistant`
    - Click **Add**
 
 2. Install the **Smartfire Server** add-on

@@ -26,7 +26,7 @@
     },
     "error": {
       "cannot_connect": "Unable to connect to the Smartfire server. Ensure it is running and the URL is correct.",
-      "unknown": "An unexpected error occurred. Check the Home Assistant logs for details."
+      "unknown": "An unexpected error occurred: {error}"
     },
     "abort": {
       "already_configured": "This Smartfire server is already configured."

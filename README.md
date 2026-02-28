@@ -7,7 +7,7 @@ Home Assistant integration for controlling Proflame 2 fireplaces via the YardSti
 ### Local Installation (YardStick on Home Assistant server)
 
 1. **Add this repo to HACS** (Integrations) and install the Smartfire integration
-2. **Add this repo to the Add-on store** (Settings → Add-ons → Add-on store → Repositories → `https://github.com/davidrusenko/smartfire-homeassistant`)
+2. **Add this repo to the Add-on store** (Settings → Add-ons → Add-on store → Repositories → `https://github.com/drusenko/smartfire-homeassistant`)
 3. **Install and start** the Smartfire Server add-on
 4. **Add the integration** (Settings → Devices & Services → Add Integration → Smartfire)
 5. Choose **Local** - you'll get a fireplace switch to turn on/off

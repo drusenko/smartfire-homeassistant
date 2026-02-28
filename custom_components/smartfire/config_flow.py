@@ -75,6 +75,7 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                         }
                     ),
                     errors={"base": "unknown"},
+                    description_placeholders={"error": str(err)[:200]},
                 )
 
         return self.async_show_form(
@@ -147,6 +148,7 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 ),
                 description="For local installations, you must install and run the Smartfire Server add-on. Go to Settings → Add-ons → Add-on store → Add repository, then add this repository URL. Install the 'Smartfire Server' add-on, start it, and ensure the YardStick One is connected via USB.",
                 errors={"base": "unknown"},
+                description_placeholders={"error": str(err)[:200]},
             )
 
     async def async_step_remote(

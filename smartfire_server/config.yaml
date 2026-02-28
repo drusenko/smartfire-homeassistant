@@ -3,7 +3,7 @@ name: Smartfire Server
 version: "1.0.0"
 slug: smartfire_server
 description: REST server for Proflame 2 fireplace control via YardStick One RF transmitter
-url: "https://github.com/davidrusenko/smartfire-homeassistant"
+url: "https://github.com/drusenko/smartfire-homeassistant"
 arch:
   - aarch64
   - amd64

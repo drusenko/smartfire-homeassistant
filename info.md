@@ -19,7 +19,7 @@ Home Assistant integration for controlling Proflame 2 fireplaces (Jotul, Mendota
 1. Install [HACS](https://hacs.xyz/) if you haven't already
 2. In HACS, go to **Integrations** → **Add** → search for "Smartfire" or add this repository:
    - Click the three dots menu → **Custom repositories**
-   - Add: `https://github.com/davidrusenko/smartfire-homeassistant`
+   - Add: `https://github.com/drusenko/smartfire-homeassistant`
    - Category: Integration
 3. Install the Smartfire integration
 4. Restart Home Assistant
@@ -28,7 +28,7 @@ Home Assistant integration for controlling Proflame 2 fireplaces (Jotul, Mendota
 
 1. Add the add-on repository in Home Assistant:
    - **Settings** → **Add-ons** → **Add-on store** → **Repositories**
-   - Add: `https://github.com/davidrusenko/smartfire-homeassistant`
+   - Add: `https://github.com/drusenko/smartfire-homeassistant`
 2. Install and start the **Smartfire Server** add-on
 3. Configure the Smartfire integration (Settings → Devices & Services → Add Integration)
 4. Choose **Local** when prompted
