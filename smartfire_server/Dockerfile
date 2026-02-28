@@ -10,13 +10,17 @@ RUN apk add --no-cache \
     libusb-dev \
     gcc \
     musl-dev \
-    linux-headers
+    linux-headers \
+    git
 
-# Install Python dependencies
-RUN pip3 install --no-cache-dir \
-    rfcat \
-    bitstring \
-    flask
+# Upgrade pip (avoids pyproject.toml parsing issues with older pip)
+RUN pip3 install --no-cache-dir --upgrade pip
+
+# Install rfcat from git (PyPI package has pyproject.toml that breaks on older pip)
+RUN pip3 install --no-cache-dir "git+https://github.com/atlas0fd00m/rfcat.git"
+
+# Install other Python dependencies
+RUN pip3 install --no-cache-dir bitstring flask
 
 # Copy application
 COPY smartfire_controller/ /app/

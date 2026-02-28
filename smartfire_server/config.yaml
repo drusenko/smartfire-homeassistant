@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Smartfire Server
-version: "1.0.0"
+version: "1.0.1"
 slug: smartfire_server
 description: REST server for Proflame 2 fireplace control via YardStick One RF transmitter
 url: "https://github.com/drusenko/smartfire-homeassistant"
