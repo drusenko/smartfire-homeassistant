@@ -92,13 +92,6 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 )
             errors["base"] = "local_cannot_connect"
 
-        description = (
-            "Install the Smartfire Server add-on first (it has USB access for the YardStick): "
-            "Settings → Add-ons → Add-on store → Repositories → Add "
-            "https://github.com/drusenko/smartfire-homeassistant → "
-            "Install 'Smartfire Server' → Start it. Connect the YardStick, then continue."
-        )
-
         return self.async_show_form(
             step_id="local",
             data_schema=vol.Schema(
@@ -106,7 +99,6 @@ class SmartfireConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                     vol.Required("ready", default=False): bool,
                 }
             ),
-            description=description,
             errors=errors,
         )
 
