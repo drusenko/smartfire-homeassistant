@@ -25,6 +25,16 @@ fp = Fireplace()
 app = Flask(__name__)
 
 
+@app.errorhandler(Exception)
+def handle_unhandled_error(e):
+    """Catch unhandled exceptions and return a proper JSON error."""
+    logger.exception("Unhandled error: %s", e)
+    return (
+        {"error": str(e), "hint": "Check that YardStick One is connected via USB"},
+        503,
+    )
+
+
 def _check_yardstick(log_result: bool = True) -> bool:
     """Check if YardStick USB device is found. Optionally log result. Return True/False."""
     try:
@@ -95,8 +105,15 @@ def power():
     """Get or set the power."""
     if request.method == "GET":
         return str(fp.power)
-    fp.power = request.data == b"True"
-    return str(fp.power)
+    try:
+        fp.power = request.data == b"True"
+        return str(fp.power)
+    except Exception as e:
+        logger.exception("Failed to set power: %s", e)
+        return (
+            {"error": str(e), "hint": "Check that YardStick One is connected via USB"},
+            503,
+        )
 
 
 @app.route("/front", methods=["GET", "PUT"])

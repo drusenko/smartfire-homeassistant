@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import socket
 from typing import Any
 
@@ -59,9 +60,22 @@ class SmartfireApiClient:
                 data="True" if power else "False",
                 timeout=self._timeout,
             ) as response:
-                response.raise_for_status()
+                if not response.ok:
+                    body = await response.text()
+                    try:
+                        err_data = json.loads(body) if body else {}
+                        hint = err_data.get("hint", "")
+                        err_msg = err_data.get("error", body or response.reason)
+                        msg = f"Smartfire server error: {err_msg}"
+                        if hint:
+                            msg += f" ({hint})"
+                    except (ValueError, TypeError):
+                        msg = f"Smartfire server error: {response.status} {response.reason}"
+                    raise SmartfireApiClientCommunicationError(msg)
                 text = await response.text()
                 return text.strip().lower() == "true"
+        except SmartfireApiClientCommunicationError:
+            raise
         except TimeoutError as exc:
             msg = f"Timeout connecting to Smartfire server: {exc}"
             LOGGER.error(msg)

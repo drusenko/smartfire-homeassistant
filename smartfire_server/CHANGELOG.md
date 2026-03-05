@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+- Fix 500 error when YardStick not connected: return 503 with clear error message
+- Add error handling to power endpoint and global exception handler
+- Integration now shows server's error message (e.g. "Check that YardStick One is connected")
+
 ## 1.0.2
 
 - Log YardStick USB device detection status at startup
