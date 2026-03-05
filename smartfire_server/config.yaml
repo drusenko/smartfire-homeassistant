@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: Smartfire Server
-version: "1.0.5"
+version: "1.0.8"
 slug: smartfire_server
 description: REST server for Proflame 2 fireplace control via YardStick One RF transmitter
 url: "https://github.com/drusenko/smartfire-homeassistant"
@@ -16,5 +16,9 @@ ports:
   "5000/tcp": 5000
 ports_description:
   "5000/tcp": "REST API port"
-options: {}
-schema: {}
+options:
+  serial: ""
+  ecc_xor: ""  # Optional: hex correction for some remotes (e.g. 0902). Leave empty for standard.
+schema:
+  serial: str?
+  ecc_xor: str?
