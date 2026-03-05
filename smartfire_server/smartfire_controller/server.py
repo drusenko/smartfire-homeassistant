@@ -7,7 +7,7 @@ import json
 import logging
 import os
 
-from flask import Flask, request
+from flask import Flask, jsonify, request
 
 from fireplace import Fireplace
 
@@ -29,10 +29,10 @@ app = Flask(__name__)
 def handle_unhandled_error(e):
     """Catch unhandled exceptions and return a proper JSON error."""
     logger.exception("Unhandled error: %s", e)
-    return (
-        {"error": str(e), "hint": "Check that YardStick One is connected via USB"},
-        503,
-    )
+    return jsonify(
+        error=str(e),
+        hint="Check add-on logs for details. YardStick may need to be reconnected.",
+    ), 503
 
 
 def _check_yardstick(log_result: bool = True) -> bool:
@@ -110,10 +110,10 @@ def power():
         return str(fp.power)
     except Exception as e:
         logger.exception("Failed to set power: %s", e)
-        return (
-            {"error": str(e), "hint": "Check that YardStick One is connected via USB"},
-            503,
-        )
+        return jsonify(
+            error=str(e),
+            hint="Check add-on logs for details. YardStick may need to be reconnected.",
+        ), 503
 
 
 @app.route("/front", methods=["GET", "PUT"])

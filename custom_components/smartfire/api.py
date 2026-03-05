@@ -65,12 +65,13 @@ class SmartfireApiClient:
                     try:
                         err_data = json.loads(body) if body else {}
                         hint = err_data.get("hint", "")
-                        err_msg = err_data.get("error", body or response.reason)
+                        err_msg = err_data.get("error", body or str(response.reason))
                         msg = f"Smartfire server error: {err_msg}"
                         if hint:
-                            msg += f" ({hint})"
+                            msg += f" — {hint}"
                     except (ValueError, TypeError):
                         msg = f"Smartfire server error: {response.status} {response.reason}"
+                    LOGGER.error("Server returned %s: %s", response.status, body or "(no body)")
                     raise SmartfireApiClientCommunicationError(msg)
                 text = await response.text()
                 return text.strip().lower() == "true"
