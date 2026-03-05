@@ -12,7 +12,7 @@ Home Assistant integration for controlling Proflame 2 fireplaces via the YardSti
 4. **Connect the YardStick One** USB dongle to your Home Assistant server
 5. **Add the integration** (Settings → Devices & Services → Add Integration → Smartfire)
 6. Choose **Local** - you'll get a fireplace switch to turn on/off
-7. **Pair the YardStick with your fireplace**: Press and hold the black Reset button on the fireplace receiver until you hear 3 quick beeps, then immediately turn the switch on or off from Home Assistant. If pairing succeeds, you'll hear 3 more beeps. If commands beep but don't control the fireplace, capture your remote's ID with `rtl_433 -f 315M -R 207` and enter it in the add-on config (e.g. `21dd02`).
+7. **Pair the YardStick with your fireplace**: Press and hold the black Reset button on the fireplace receiver until you hear 3 quick beeps, then immediately turn the switch on or off from Home Assistant. If pairing succeeds, you'll hear 3 more beeps.
 
 ### Remote Installation
 

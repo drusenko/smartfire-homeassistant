@@ -22,51 +22,35 @@ logger = logging.getLogger(__name__)
 logging.getLogger("werkzeug").setLevel(logging.WARNING)
 
 
-def _load_options():
-    """Load add-on options. Returns (serial, ecc_xor). serial=None for default."""
+def _load_serial_from_options():
+    """Load serial from add-on options.json. Returns None to use default."""
     path = "/data/options.json"
     if not os.path.exists(path):
-        return (None, 0)
+        return None
     try:
         with open(path) as f:
             opts = json.load(f)
         raw = opts.get("serial", "").strip()
-        serial = None
-        if raw:
-            # Try hex format first (e.g. "21dd02" or "21,dd,02" from rtl_433)
-            hex_chars = "".join(c for c in raw.lower() if c in "0123456789abcdef")
-            if len(hex_chars) == 6:
-                b0, b1, b2 = int(hex_chars[0:2], 16), int(hex_chars[2:4], 16), int(hex_chars[4:6], 16)
-                serial = [
-                    "0" + format(b0, "08b"),
-                    "0" + format(b1, "08b"),
-                    "0" + format(b2, "08b"),
-                ]
-            else:
-                words = [w.strip() for w in raw.split(",") if w.strip()]
-                if len(words) == 3 and all(len(w) == 9 and all(c in "01" for c in w) for w in words):
-                    serial = words
-                else:
-                    logger.warning("Serial must be 6 hex chars or 3 comma-separated 9-bit binary words")
-        ecc_xor = 0
-        ecc_raw = opts.get("ecc_xor", "").strip()
-        if ecc_raw:
-            try:
-                ecc_xor = int(ecc_raw, 16) & 0xFFFF
-            except ValueError:
-                logger.warning("ecc_xor must be hex (e.g. 0902). Ignoring %r", ecc_raw)
-        return (serial, ecc_xor)
+        if not raw:
+            return None
+        words = [w.strip() for w in raw.split(",") if w.strip()]
+        if len(words) != 3:
+            logger.warning("Serial must be 3 comma-separated 9-bit binary words, got %d", len(words))
+            return None
+        for w in words:
+            if len(w) != 9 or not all(c in "01" for c in w):
+                logger.warning("Each serial word must be 9 binary digits (0/1), got %r", w)
+                return None
+        return words
     except (json.JSONDecodeError, OSError) as e:
         logger.warning("Could not read options: %s", e)
-        return (None, 0)
+        return None
 
 
-_serial, _ecc_xor = _load_options()
-fp = Fireplace(serial=_serial, ecc_xor=_ecc_xor)
+_serial = _load_serial_from_options()
+fp = Fireplace(serial=_serial)
 if _serial:
     logger.info("Using configured serial: %s", _serial)
-if _ecc_xor:
-    logger.info("Using ECC XOR correction: 0x%04x", _ecc_xor)
 app = Flask(__name__)
 
 
