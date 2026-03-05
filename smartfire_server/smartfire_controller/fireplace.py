@@ -240,7 +240,11 @@ class Fireplace:
 
     def send_packet(self, packet):
         """Transmit the packet over the radio 5 times."""
-        data = bytes(packet.bytes)  # Ensure bytes for Python 3 / rfcat compatibility
+        # Packet is 308 bits (7 words × 44 bits); pad to multiple of 8 for bytes
+        pad_bits = (8 - len(packet) % 8) % 8
+        if pad_bits:
+            packet = packet + Bits(uint=0, length=pad_bits)
+        data = bytes(packet.bytes)
         logging.info("Transmitting %s (%d bytes)", packet.hex, len(data))
         self.radio.setModeIDLE()
         self.radio.RFxmit(data=data, repeat=4)
